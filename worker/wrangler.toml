@@ -1,0 +1,24 @@
+name = "fund-estimator"
+main = "src/index.ts"
+compatibility_date = "2024-08-21"
+compatibility_flags = ["nodejs_compat"]
+
+# 部署后访问地址：https://fund-estimator.<your-subdomain>.workers.dev
+# 前端把 VITE_API_BASE 设为该地址 + /api 即可
+
+# neodata token 通过 secret 注入：
+#   本地：直接写在 .dev.vars（不入 git）
+#   生产：echo "<token>" | npx wrangler secret put NEODATA_TOKEN
+# admin_key：保护 /api/admin/update-token 接口
+#   生产：echo "<your-admin-key>" | npx wrangler secret put ADMIN_KEY
+
+# ===== KV 持久化 token（生产环境多实例共享）=====
+# 1. 创建 KV namespace（一次性）：
+#    npx wrangler kv namespace create TOKEN_KV
+# 2. 把返回的 id 填到下方 [[kv_namespaces]] 块里
+# 3. 取消注释以下三行
+# [[kv_namespaces]]
+# binding = "TOKEN_KV"
+# id = "把上面命令返回的 id 填到这里"
+
+# 本地 dev 不需要 KV，token 存在内存里，重启 wrangler 后从 .dev.vars 重新读
